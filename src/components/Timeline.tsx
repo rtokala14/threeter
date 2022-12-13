@@ -5,6 +5,7 @@ import { RouterOutputs, trpc } from "../utils/trpc";
 import { CreateTweet } from "./CreateTweet";
 import relativeTime from "dayjs/plugin/relativeTime";
 import updateLocal from "dayjs/plugin/updateLocale";
+import { useEffect, useState } from "react";
 
 dayjs.extend(relativeTime);
 dayjs.extend(updateLocal);
@@ -26,6 +27,33 @@ dayjs.updateLocale("en", {
     yy: "%dy",
   },
 });
+
+function useScrollPosition() {
+  const [scrollPosition, setScrollPosition] = useState(0);
+
+  function handleScroll() {
+    const height =
+      document.documentElement.scrollHeight -
+      document.documentElement.clientHeight;
+
+    const winScroll =
+      document.body.scrollTop || document.documentElement.scrollTop;
+
+    const scrolled = (winScroll / height) * 100;
+
+    setScrollPosition(scrolled);
+  }
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  return scrollPosition;
+}
 
 function Tweet({
   tweet,
@@ -63,7 +91,11 @@ function Tweet({
 export function Timeline() {
   const { data: session } = useSession();
 
-  const { data, hasNextPage, fetchNextPage, isFetched } =
+  const scrollPosition = useScrollPosition();
+
+  console.log(scrollPosition);
+
+  const { data, hasNextPage, fetchNextPage, isFetching } =
     trpc.tweet.timeline.useInfiniteQuery(
       {
         limit: 10,
@@ -73,13 +105,21 @@ export function Timeline() {
       }
     );
 
+  const tweets = data?.pages.flatMap((page) => page.tweets) ?? [];
+
+  useEffect(() => {
+    if (scrollPosition > 90 && hasNextPage && !isFetching) {
+      fetchNextPage();
+    }
+  }, [scrollPosition, hasNextPage, isFetching, fetchNextPage()]);
+
   return (
     <div>
       {/* {session ? <button onClick={() => signOut()}>Log Out</button> : <></>} */}
       <CreateTweet />
       {/* {JSON.stringify(data)} */}
       <div className="border-l-2 border-r-2 border-t-2 border-gray-500">
-        {data?.tweets.map((tweet) => {
+        {tweets.map((tweet) => {
           return <Tweet key={tweet.id} tweet={tweet} />;
         })}
       </div>
