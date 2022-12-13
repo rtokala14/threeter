@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
-import { RouterOutputs, trpc } from "../utils/trpc";
+import { type RouterOutputs, trpc } from "../utils/trpc";
 import { CreateTweet } from "./CreateTweet";
 import relativeTime from "dayjs/plugin/relativeTime";
 import updateLocal from "dayjs/plugin/updateLocale";
@@ -93,7 +93,7 @@ export function Timeline() {
 
   const scrollPosition = useScrollPosition();
 
-  console.log(scrollPosition);
+  // console.log(scrollPosition);
 
   const { data, hasNextPage, fetchNextPage, isFetching } =
     trpc.tweet.timeline.useInfiniteQuery(
@@ -111,7 +111,7 @@ export function Timeline() {
     if (scrollPosition > 90 && hasNextPage && !isFetching) {
       fetchNextPage();
     }
-  }, [scrollPosition, hasNextPage, isFetching, fetchNextPage()]);
+  }, [scrollPosition, hasNextPage, isFetching, fetchNextPage]);
 
   return (
     <div>
