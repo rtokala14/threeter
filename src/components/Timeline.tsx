@@ -69,7 +69,7 @@ function Tweet({
             alt={`${tweet.author.name} profile picture`}
             width={48}
             height={48}
-            className="rounded-full"
+            className="h-auto rounded-full"
           />
         )}
 
@@ -122,6 +122,8 @@ export function Timeline() {
         {tweets.map((tweet) => {
           return <Tweet key={tweet.id} tweet={tweet} />;
         })}
+
+        {!hasNextPage && <p>End of available tweets</p>}
       </div>
     </div>
   );

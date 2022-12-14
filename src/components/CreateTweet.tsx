@@ -31,6 +31,8 @@ export function CreateTweet() {
     }
 
     mutateAsync({ text });
+
+    setText("");
   }
 
   return (
@@ -42,6 +44,7 @@ export function CreateTweet() {
       >
         <textarea
           className="w-full p-4 shadow"
+          value={text}
           onChange={(e) => setText(e.target.value)}
         />
         <div className="mt-4 flex justify-end">
