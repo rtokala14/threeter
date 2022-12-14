@@ -1,5 +1,5 @@
-import { FormEvent, useState } from "react";
-import { object, string, ZodError } from "zod";
+import { type FormEvent, useState } from "react";
+import { object, string } from "zod";
 import { trpc } from "../utils/trpc";
 
 export const tweetSchema = object({

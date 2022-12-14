@@ -6,6 +6,7 @@ import { CreateTweet } from "./CreateTweet";
 import relativeTime from "dayjs/plugin/relativeTime";
 import updateLocal from "dayjs/plugin/updateLocale";
 import { useEffect, useState } from "react";
+import { AiFillHeart } from "react-icons/ai";
 
 dayjs.extend(relativeTime);
 dayjs.extend(updateLocal);
@@ -60,6 +61,11 @@ function Tweet({
 }: {
   tweet: RouterOutputs["tweet"]["timeline"]["tweets"][number];
 }) {
+  const likeMutation = trpc.tweet.like.useMutation().mutateAsync;
+  const unLikeMutation = trpc.tweet.unlike.useMutation().mutateAsync;
+
+  const hasLiked = tweet.likes.length > 0;
+
   return (
     <div className="mb-4 border-b-2 border-gray-500">
       <div className="flex p-2">
@@ -83,6 +89,23 @@ function Tweet({
           </div>
           <div>{tweet.text}</div>
         </div>
+      </div>
+      <div className="mt-4 flex items-center p-2">
+        <AiFillHeart
+          color={hasLiked ? "red" : "gray"}
+          size={"1.5rem"}
+          onClick={() => {
+            if (hasLiked) {
+              unLikeMutation({ tweetId: tweet.id });
+              return;
+            }
+
+            likeMutation({
+              tweetId: tweet.id,
+            });
+          }}
+        />
+        <span className="text-sm text-gray-500">{10}</span>
       </div>
     </div>
   );
@@ -112,6 +135,8 @@ export function Timeline() {
       fetchNextPage();
     }
   }, [scrollPosition, hasNextPage, isFetching, fetchNextPage]);
+
+  console.log("tweets", tweets);
 
   return (
     <div>
