@@ -55,6 +55,12 @@ export const tweetRouter = router({
               id: true,
             },
           },
+
+          _count: {
+            select: {
+              likes: true,
+            },
+          },
         },
       });
 
