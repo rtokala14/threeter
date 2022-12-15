@@ -7,6 +7,11 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import updateLocal from "dayjs/plugin/updateLocale";
 import { useEffect, useState } from "react";
 import { AiFillHeart } from "react-icons/ai";
+import {
+  InfiniteData,
+  useQueryClient,
+  type QueryClient,
+} from "@tanstack/react-query";
 
 dayjs.extend(relativeTime);
 dayjs.extend(updateLocal);
@@ -56,13 +61,78 @@ function useScrollPosition() {
   return scrollPosition;
 }
 
+function updateCache({
+  client,
+  variables,
+  data,
+  action,
+}: {
+  client: QueryClient;
+  variables: {
+    tweetId: string;
+  };
+  data: {
+    userId: string;
+  };
+  action: "like" | "unlike";
+}) {
+  client.setQueryData(
+    [
+      ["tweet", "timeline"],
+      {
+        input: {
+          limit: 10,
+        },
+        type: "infinite",
+      },
+    ],
+    (oldData) => {
+      // console.log(oldData);
+
+      const newData = oldData as InfiniteData<
+        RouterOutputs["tweet"]["timeline"]
+      >;
+
+      const newTweets = newData.pages.map((page) => {
+        return {
+          tweets: page.tweets.map((tweet) => {
+            if (tweet.id === variables.tweetId) {
+              return {
+                ...tweet,
+                likes: action === "like" ? [data.userId] : [],
+              };
+            }
+
+            return tweet;
+          }),
+        };
+      });
+
+      return {
+        ...newData,
+        pages: newTweets,
+      };
+    }
+  );
+}
+
 function Tweet({
   tweet,
+  client,
 }: {
   tweet: RouterOutputs["tweet"]["timeline"]["tweets"][number];
+  client: QueryClient;
 }) {
-  const likeMutation = trpc.tweet.like.useMutation().mutateAsync;
-  const unLikeMutation = trpc.tweet.unlike.useMutation().mutateAsync;
+  const likeMutation = trpc.tweet.like.useMutation({
+    onSuccess: (data, variables) => {
+      updateCache({ client, data, variables, action: "like" });
+    },
+  }).mutateAsync;
+  const unLikeMutation = trpc.tweet.unlike.useMutation({
+    onSuccess: (data, variables) => {
+      updateCache({ client, data, variables, action: "unlike" });
+    },
+  }).mutateAsync;
 
   const hasLiked = tweet.likes.length > 0;
 
@@ -83,7 +153,7 @@ function Tweet({
           <div className="flex items-center">
             <p className="font-bold">{tweet.author.name}</p>
             <p className="text-sm text-gray-400">
-              {"  -  "}
+              {"   -  "}
               {dayjs(tweet.createdAt).fromNow()}
             </p>
           </div>
@@ -105,7 +175,7 @@ function Tweet({
             });
           }}
         />
-        <span className="text-sm text-gray-500">{10}</span>
+        <span className="text-sm text-gray-500">{tweet.likes.length}</span>
       </div>
     </div>
   );
@@ -128,6 +198,8 @@ export function Timeline() {
       }
     );
 
+  const client = useQueryClient();
+
   const tweets = data?.pages.flatMap((page) => page.tweets) ?? [];
 
   useEffect(() => {
@@ -145,7 +217,7 @@ export function Timeline() {
       {/* {JSON.stringify(data)} */}
       <div className="border-l-2 border-r-2 border-t-2 border-gray-500">
         {tweets.map((tweet) => {
-          return <Tweet key={tweet.id} tweet={tweet} />;
+          return <Tweet key={tweet.id} tweet={tweet} client={client} />;
         })}
 
         {!hasNextPage && <p>End of available tweets</p>}
