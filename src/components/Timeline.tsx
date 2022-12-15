@@ -156,7 +156,7 @@ function Tweet({
             alt={`${tweet.author.name} profile picture`}
             width={48}
             height={48}
-            className="h-auto rounded-full"
+            className="rounded-full"
           />
         )}
 
@@ -197,7 +197,7 @@ function Tweet({
 export function Timeline({
   where = {},
 }: {
-  where: RouterInputs["tweet"]["timeline"]["where"];
+  where?: RouterInputs["tweet"]["timeline"]["where"];
 }) {
   const { data: session } = useSession();
 
