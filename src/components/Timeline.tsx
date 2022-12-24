@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
-import { type RouterOutputs, trpc, RouterInputs } from "../utils/trpc";
+import { type RouterOutputs, trpc, type RouterInputs } from "../utils/trpc";
 import { CreateTweet } from "./CreateTweet";
 import relativeTime from "dayjs/plugin/relativeTime";
 import updateLocal from "dayjs/plugin/updateLocale";
@@ -226,11 +226,11 @@ export function Timeline({
     }
   }, [scrollPosition, hasNextPage, isFetching, fetchNextPage]);
 
-  console.log("tweets", tweets);
+  // console.log("tweets", tweets);
 
   return (
     <div>
-      {session ? (
+      {/* {session ? (
         <button
           onClick={() => signOut()}
           className=" self-center text-center text-gray-600"
@@ -239,7 +239,8 @@ export function Timeline({
         </button>
       ) : (
         <></>
-      )}
+      )} */}
+      <h1 className=" pl-4 pt-3 text-2xl font-bold">Home</h1>
       <CreateTweet />
       {/* {JSON.stringify(data)} */}
       <div className="border-l-2 border-r-2 border-t-2 border-gray-500">

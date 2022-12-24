@@ -1,6 +1,9 @@
 import { type FormEvent, useState } from "react";
 import { object, string } from "zod";
 import { trpc } from "../utils/trpc";
+import Image from "next/image";
+import { useSession } from "next-auth/react";
+import Link from "next/link";
 
 export const tweetSchema = object({
   text: string({
@@ -13,6 +16,7 @@ export function CreateTweet() {
   const [text, setText] = useState("");
   const [error, setError] = useState("");
   const utils = trpc.useContext();
+  const { data: session } = useSession();
 
   const { mutateAsync } = trpc.tweet.create.useMutation({
     onSuccess: () => {
@@ -44,24 +48,41 @@ export function CreateTweet() {
   return (
     <>
       {error && JSON.stringify(error)}
-      <form
-        onSubmit={handleSubmit}
-        className="mb-4 flex w-full flex-col rounded-md border-2 p-4"
-      >
-        <textarea
-          className="w-full p-4 shadow"
-          value={text}
-          onChange={(e) => setText(e.target.value)}
-        />
-        <div className="mt-4 flex justify-end">
-          <button
-            className="rounded-md bg-primary px-4 py-2 text-white"
-            type="submit"
-          >
-            Threet
-          </button>
-        </div>
-      </form>
+      {session ? (
+        <form
+          onSubmit={handleSubmit}
+          className="mb-4 flex w-full flex-col rounded-md  p-4"
+        >
+          <div className=" flex flex-row items-center justify-between">
+            <Link href={`/${session.user?.name}`}>
+              <Image
+                src={session.user?.image?.toString()!}
+                alt={`${session.user?.name} profile picture`}
+                width={68}
+                height={68}
+                className="rounded-full"
+              />
+            </Link>
+
+            <textarea
+              className="w-full p-4 shadow"
+              value={text}
+              onChange={(e) => setText(e.target.value)}
+              placeholder={"What's Happening?"}
+            />
+          </div>
+          <div className="mt-4 flex justify-end">
+            <button
+              className="rounded-md bg-primary px-4 py-2 text-white"
+              type="submit"
+            >
+              Threet
+            </button>
+          </div>
+        </form>
+      ) : (
+        <></>
+      )}
     </>
   );
 }
