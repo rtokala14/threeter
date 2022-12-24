@@ -230,7 +230,16 @@ export function Timeline({
 
   return (
     <div>
-      {/* {session ? <button onClick={() => signOut()}>Log Out</button> : <></>} */}
+      {session ? (
+        <button
+          onClick={() => signOut()}
+          className=" self-center text-center text-gray-600"
+        >
+          Log Out
+        </button>
+      ) : (
+        <></>
+      )}
       <CreateTweet />
       {/* {JSON.stringify(data)} */}
       <div className="border-l-2 border-r-2 border-t-2 border-gray-500">
