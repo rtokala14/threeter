@@ -56,7 +56,7 @@ export function CreateTweet() {
           <div className=" flex flex-row items-center justify-between">
             <Link href={`/${session.user?.name}`}>
               <Image
-                src={session.user?.image?.toString()!}
+                src={session.user!.image!}
                 alt={`${session.user?.name} profile picture`}
                 width={68}
                 height={68}
