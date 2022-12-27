@@ -74,7 +74,7 @@ export function CreateTweet() {
               placeholder={"What's Happening?"}
               minLength={10}
               maxLength={280}
-              minRows={4}
+              minRows={2}
               maxRows={8}
             />
           </div>
