@@ -88,7 +88,11 @@ export function Sidebar() {
           <li>
             <hr className="h-1 w-9 rounded-3xl border-0 bg-gray-200 xl:w-56" />
           </li>
-          <a href="https://github.com/rtokala14/threeter" target={"_blank"}>
+          <a
+            href="https://github.com/rtokala14/threeter"
+            target={"_blank"}
+            rel={"noreferrer"}
+          >
             <li className=" flex h-10 w-10 items-center justify-center rounded-full hover:cursor-pointer hover:bg-gray-100  xl:h-auto xl:w-auto xl:rounded-3xl xl:p-2 xl:pr-7">
               <FaCode
                 size={35}
