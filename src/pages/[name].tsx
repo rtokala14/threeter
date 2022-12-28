@@ -1,5 +1,6 @@
 import { useRouter } from "next/router";
 import { Timeline } from "../components/Timeline";
+import { Sidebar } from "../components/Sidebar";
 
 export default function UserPage() {
   const router = useRouter();
@@ -8,13 +9,16 @@ export default function UserPage() {
 
   return (
     <div>
-      <Timeline
-        where={{
-          author: {
-            name,
-          },
-        }}
-      />
+      <div className=" flex w-full flex-row justify-center">
+        <Sidebar />
+        <Timeline
+          where={{
+            author: {
+              name,
+            },
+          }}
+        />
+      </div>
     </div>
   );
 }

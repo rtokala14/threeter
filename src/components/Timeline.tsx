@@ -229,7 +229,7 @@ export function Timeline({
   // console.log("tweets", tweets);
 
   return (
-    <div>
+    <div className=" w-3/4">
       {/* {session ? (
         <button
           onClick={() => signOut()}
@@ -240,7 +240,7 @@ export function Timeline({
       ) : (
         <></>
       )} */}
-      <h1 className=" pl-4 pt-3 text-2xl font-bold">Home</h1>
+      {/* <h1 className=" pl-4 pt-3 text-2xl font-bold">Home</h1> */}
       <CreateTweet />
       {/* {JSON.stringify(data)} */}
       <div className="border-l-2 border-r-2 border-t-2 border-gray-500">
