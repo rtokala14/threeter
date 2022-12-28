@@ -7,6 +7,7 @@ import {
   FaUser,
   FaSignOutAlt,
   FaCode,
+  FaCog,
 } from "react-icons/fa";
 
 export function Sidebar() {
@@ -76,6 +77,7 @@ export function Sidebar() {
                 size={35}
                 style={{
                   padding: "2px",
+                  color: "red",
                 }}
               />
               <h1 className=" ml-4 hidden text-lg font-semibold xl:block">
@@ -85,6 +87,17 @@ export function Sidebar() {
           ) : (
             <></>
           )}
+          <li className=" flex h-10 w-10 items-center justify-center rounded-full hover:cursor-pointer hover:bg-gray-100  xl:h-auto xl:w-auto xl:rounded-3xl xl:p-2 xl:pr-7">
+            <FaCog
+              size={35}
+              style={{
+                padding: "2px",
+              }}
+            />
+            <h1 className=" ml-4 hidden text-lg font-semibold xl:block">
+              Settings
+            </h1>
+          </li>
           <li>
             <hr className="h-1 w-9 rounded-3xl border-0 bg-gray-200 xl:w-56" />
           </li>
