@@ -1,5 +1,4 @@
 import dayjs from "dayjs";
-import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import { type RouterOutputs, trpc, type RouterInputs } from "../utils/trpc";
 import { CreateTweet } from "./CreateTweet";
@@ -14,6 +13,7 @@ import {
 } from "@tanstack/react-query";
 
 import Link from "next/link";
+import { NavBar } from "./NavBar";
 
 const LIMIT = 10;
 
@@ -239,6 +239,7 @@ export function Timeline({
         <></>
       )} */}
       {/* <h1 className=" pl-4 pt-3 text-2xl font-bold">Home</h1> */}
+      <NavBar />
       <CreateTweet />
       {/* {JSON.stringify(data)} */}
       <div className=" border-t-2 border-gray-100">
