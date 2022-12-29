@@ -163,7 +163,7 @@ function Tweet({
 
         <div className="ml-2">
           <div className="flex items-center">
-            <p className="font-bold">
+            <p className="font-bold hover:underline">
               <Link href={`/${tweet.author.name}`}>{tweet.author.name}</Link>
             </p>
             <p className="text-sm text-gray-400">
