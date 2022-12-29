@@ -18,6 +18,28 @@ export const tweetRouter = router({
       },
     });
   }),
+  countTweets: publicProcedure
+    .input(
+      z.object({
+        author: z.object({
+          name: z.string(),
+        }),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const { prisma } = ctx;
+      const { author } = input;
+
+      const count = prisma.tweet.aggregate({
+        _count: {
+          id: true,
+        },
+        where: {
+          author: author,
+        },
+      });
+      return count;
+    }),
   timeline: publicProcedure
     .input(
       z.object({
