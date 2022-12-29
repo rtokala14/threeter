@@ -152,13 +152,15 @@ function Tweet({
     <div className="mb-4 border-b-2 border-gray-100">
       <div className="flex p-2">
         {tweet.author.image && (
-          <Image
-            src={tweet.author.image}
-            alt={`${tweet.author.name} profile picture`}
-            width={48}
-            height={48}
-            className="rounded-full"
-          />
+          <Link href={`/${tweet.author.name}`}>
+            <Image
+              src={tweet.author.image}
+              alt={`${tweet.author.name} profile picture`}
+              width={48}
+              height={48}
+              className="rounded-full"
+            />
+          </Link>
         )}
 
         <div className="ml-2">
