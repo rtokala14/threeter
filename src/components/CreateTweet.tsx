@@ -54,7 +54,7 @@ export function CreateTweet() {
       {session ? (
         <form
           onSubmit={handleSubmit}
-          className="mb-4 flex w-full flex-col rounded-md  p-4"
+          className="mb-4 flex w-full flex-col rounded-md  border-b-2 border-gray-100 p-4"
         >
           <div className=" flex flex-row items-center justify-between">
             <Link href={`/${session.user?.name}`}>

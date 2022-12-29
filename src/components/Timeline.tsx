@@ -148,7 +148,7 @@ function Tweet({
   const hasLiked = tweet.likes.length > 0;
 
   return (
-    <div className="mb-4 border-b-2 border-gray-500">
+    <div className="mb-4 border-b-2 border-gray-100">
       <div className="flex p-2">
         {tweet.author.image && (
           <Image
@@ -199,8 +199,6 @@ export function Timeline({
 }: {
   where?: RouterInputs["tweet"]["timeline"]["where"];
 }) {
-  const { data: session } = useSession();
-
   const scrollPosition = useScrollPosition();
 
   // console.log(scrollPosition);
@@ -229,7 +227,7 @@ export function Timeline({
   // console.log("tweets", tweets);
 
   return (
-    <div className=" w-3/4">
+    <div className=" w-3/4 border-l-2 border-r-2 border-gray-100">
       {/* {session ? (
         <button
           onClick={() => signOut()}
@@ -243,7 +241,7 @@ export function Timeline({
       {/* <h1 className=" pl-4 pt-3 text-2xl font-bold">Home</h1> */}
       <CreateTweet />
       {/* {JSON.stringify(data)} */}
-      <div className="border-l-2 border-r-2 border-t-2 border-gray-500">
+      <div className=" border-t-2 border-gray-100">
         {tweets.map((tweet) => {
           return (
             <Tweet
@@ -258,7 +256,7 @@ export function Timeline({
           );
         })}
 
-        {!hasNextPage && <p>End of available tweets</p>}
+        {/* {!hasNextPage && <p>End of available tweets</p>} */}
       </div>
     </div>
   );
