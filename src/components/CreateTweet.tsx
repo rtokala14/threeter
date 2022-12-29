@@ -12,7 +12,8 @@ export const tweetSchema = object({
   text: string({
     required_error: "Threet text is required",
   })
-    .min(10)
+    .trim()
+    .min(1)
     .max(280),
 });
 export function CreateTweet() {
@@ -47,7 +48,6 @@ export function CreateTweet() {
 
     // setText("");
   }
-
   return (
     <>
       {error && JSON.stringify(error)}
@@ -56,7 +56,7 @@ export function CreateTweet() {
           onSubmit={handleSubmit}
           className="mb-4 flex w-full flex-col rounded-md  p-4"
         >
-          <div className=" flex flex-row justify-between">
+          <div className=" flex flex-row items-center justify-between">
             <Link href={`/${session.user?.name}`}>
               <Image
                 src={session.user!.image!}
@@ -79,52 +79,60 @@ export function CreateTweet() {
             />
           </div>
           <div className="mt-4 flex items-center justify-end">
-            {text.length > 0 ? (
-              text.length === 280 ? (
-                <CircularProgressbar
-                  value={(text.length / 280) * 100}
-                  className=" h-10 w-10 "
-                  styles={{
-                    root: {
-                      width: "13%",
-                    },
-                    path: {
-                      stroke: "red",
-                    },
-                  }}
-                />
-              ) : text.length > 200 ? (
-                <CircularProgressbar
-                  value={(text.length / 280) * 100}
-                  className=" h-10 w-10 "
-                  styles={{
-                    root: {
-                      width: "13%",
-                    },
-                    path: {
-                      stroke: "orange",
-                    },
-                  }}
-                />
+            {tweetSchema.safeParse({ text }).success ? (
+              text.length > 0 ? (
+                text.length === 280 ? (
+                  <CircularProgressbar
+                    value={(text.trimStart().length / 280) * 100}
+                    className=" h-10 w-10 "
+                    styles={{
+                      root: {
+                        width: "13%",
+                      },
+                      path: {
+                        stroke: "red",
+                      },
+                    }}
+                  />
+                ) : text.length > 200 ? (
+                  <CircularProgressbar
+                    value={(text.trimStart().length / 280) * 100}
+                    className=" h-10 w-10 "
+                    styles={{
+                      root: {
+                        width: "13%",
+                      },
+                      path: {
+                        stroke: "orange",
+                      },
+                    }}
+                  />
+                ) : (
+                  <CircularProgressbar
+                    value={(text.trimStart().length / 280) * 100}
+                    className=" h-10 w-10 "
+                    styles={{
+                      root: {
+                        width: "13%",
+                      },
+                      path: {
+                        stroke: "blue",
+                      },
+                    }}
+                  />
+                )
               ) : (
-                <CircularProgressbar
-                  value={(text.length / 280) * 100}
-                  className=" h-10 w-10 "
-                  styles={{
-                    root: {
-                      width: "13%",
-                    },
-                    path: {
-                      stroke: "blue",
-                    },
-                  }}
-                />
+                <></>
               )
             ) : (
               <></>
             )}
             <button
-              className="rounded-md bg-primary px-5 py-2 text-white"
+              className={`rounded-md ${
+                tweetSchema.safeParse({ text }).success
+                  ? "bg-primary"
+                  : "bg-blue-400"
+              } px-5 py-2 text-white`}
               type="submit"
             >
               Threet
