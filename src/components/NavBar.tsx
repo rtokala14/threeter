@@ -1,12 +1,10 @@
 import { useRouter } from "next/router";
 import { FaAngleLeft } from "react-icons/fa";
 import { trpc } from "../utils/trpc";
-import { inferProcedureInput } from "@trpc/server";
-import { AppRouter } from "../server/trpc/router/_app";
 
 export function NavBar() {
   const route = useRouter();
-  const count = trpc.tweet.countTweets.useQuery({
+  const { isFetched, data: count } = trpc.tweet.countTweets.useQuery({
     author: { name: `${route.query.name}` },
   });
   console.log(count);
@@ -25,7 +23,11 @@ export function NavBar() {
             <FaAngleLeft size={35} />
           </button>
           <h1 className=" text-2xl font-bold">{route.query.name}</h1>
-          <p className=" text-sm text-gray-500">{`${count.data?._count.id} Tweets`}</p>
+          {isFetched ? (
+            <p className=" text-sm text-gray-500">{`${count?._count.id} Tweets`}</p>
+          ) : (
+            <></>
+          )}
         </div>
       )}
     </div>
