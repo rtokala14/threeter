@@ -14,6 +14,7 @@ import {
 
 import Link from "next/link";
 import { NavBar } from "./NavBar";
+import { useRouter } from "next/router";
 
 const LIMIT = 10;
 
@@ -224,6 +225,8 @@ export function Timeline({
     }
   }, [scrollPosition, hasNextPage, isFetching, fetchNextPage]);
 
+  const route = useRouter();
+
   // console.log("tweets", tweets);
 
   return (
@@ -240,7 +243,7 @@ export function Timeline({
       )} */}
       {/* <h1 className=" pl-4 pt-3 text-2xl font-bold">Home</h1> */}
       <NavBar />
-      <CreateTweet />
+      {route.asPath === "/" ? <CreateTweet /> : <></>}
       {/* {JSON.stringify(data)} */}
       <div className=" border-t-2 border-gray-100">
         {tweets.map((tweet) => {
